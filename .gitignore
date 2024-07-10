@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Server/MusicLibraryDAL/MusicLibrary.db
+/Server/MusicLibraryDAL/MusicLibrary.db-shm
+/Server/MusicLibraryDAL/MusicLibrary.db-wal
