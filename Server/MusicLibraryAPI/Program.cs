@@ -1,9 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using MusicLibraryDAL;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+var dbFilePath = builder.Configuration.GetConnectionString("DefaultConnection");
+var projectPath = Directory.GetParent(Directory.GetCurrentDirectory());
+var connectionString = string.Format(dbFilePath, projectPath);
+builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(connectionString));
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -21,5 +26,12 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<DataContext>();
+    context.Database.Migrate();
+}
 
 app.Run();
