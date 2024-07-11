@@ -30,8 +30,18 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<DataContext>();
-    context.Database.Migrate();
+    var dataContext = services.GetRequiredService<DataContext>();
+    dataContext.Database.Migrate();
+
+    try
+    {
+        var dataSeeder = new DataSeeder(dataContext);
+        dataSeeder.SeedArtist();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.ToString());
+    }
 }
 
 app.Run();
