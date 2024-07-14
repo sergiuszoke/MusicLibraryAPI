@@ -15,19 +15,29 @@ namespace MusicLibraryBLL.Services
         private readonly string _invalidSongTitleErrorMessage = "Song title cannot be null or empty.";
         private readonly string _invalidSongLengthErrorMessage = "Song length cannot be null or empty.";
         private readonly string _lengthFormatErrorMessage = "Invalid length format. Accepted formats are hh:mm:ss and mm:ss.";
+        private readonly string _invalidAlbumErrorMessage = "Album does not exist.";
 
+        private readonly IAlbumRepository _albumRepository;
         private readonly ISongRepository _songRepository;
         private readonly IMapper _mapper;
 
-        public SongService(ISongRepository songRepository, IMapper mapper) 
+        public SongService(
+            IAlbumRepository albumRepository,
+            ISongRepository songRepository, 
+            IMapper mapper) 
         {
+            _albumRepository = albumRepository;
             _songRepository = songRepository;
             _mapper = mapper;
         }
 
         public async Task AddSongAsync(CreateSongDTO song)
         {
-            // TODO Verify if album exists
+            if (!await _albumRepository.ExistsByAlbumIdAsync(song.AlbumId))
+            {
+                throw new ServiceException(_songServiceException + _invalidAlbumErrorMessage);
+            }
+
             Song newSong = _mapper.Map<Song>(song);
 
             var message = await ValidateSongAsync(newSong);
@@ -41,7 +51,10 @@ namespace MusicLibraryBLL.Services
 
         public async Task<List<SongDTO>> GetAllSongsFromAlbumAsync(int albumId)
         {
-            // TODO Verify if album exists
+            if (!await _albumRepository.ExistsByAlbumIdAsync(albumId))
+            {
+                throw new ServiceException(_songServiceException + _invalidAlbumErrorMessage);
+            }
 
             var songList = await _songRepository.GetAllSongsFromAlbumAsync(albumId);
 
@@ -52,7 +65,10 @@ namespace MusicLibraryBLL.Services
 
         public async Task UpdateSongAsync(SongDTO song)
         {
-            // TODO Verify if album exists
+            if (!await _albumRepository.ExistsByAlbumIdAsync(song.AlbumId))
+            {
+                throw new ServiceException(_songServiceException + _invalidAlbumErrorMessage);
+            }
 
             if (await _songRepository.ExistsBySongIdAsync(song.Id))
             {

@@ -13,19 +13,29 @@ namespace MusicLibraryBLL.Services
         private readonly string _invalidAlbumDescriptionErrorMessage = "Album description cannot be null or empty.";
         private readonly string _uniqueAlbumErrorMessage = "Album already Exists.";
         private readonly string _invalidAlbumErrorMessage = "Album does not exist.";
+        private readonly string _invalidArtistErrorMessage = "Artist does not exist.";
 
+        private readonly IArtistRepository _artistRepository;
         private readonly IAlbumRepository _albumRepository;
         private readonly IMapper _mapper;
 
-        public AlbumService(IAlbumRepository albumService, IMapper mapper)
+        public AlbumService(
+            IArtistRepository artistRepository,
+            IAlbumRepository albumService, 
+            IMapper mapper)
         {
+            _artistRepository = artistRepository;
             _albumRepository = albumService;
             _mapper = mapper;
         }
 
         public async Task AddAlbumAsync(CreateAlbumDTO album)
         {
-            // TODO verify if artist exists
+            if (!await _artistRepository.ExistsByArtistIdAsync(album.ArtistId))
+            {
+                throw new ServiceException(_albumServiceException + _invalidArtistErrorMessage);
+            }
+
             Album newAlbum = _mapper.Map<Album>(album);
 
             var message = await ValidateAlbumAsync(newAlbum);
@@ -39,7 +49,10 @@ namespace MusicLibraryBLL.Services
 
         public async Task<List<AlbumDTO>> GetAllAlbumsFromArtistAsync(int artistId)
         {
-            // TODO Verify if artist exists
+            if (!await _artistRepository.ExistsByArtistIdAsync(artistId))
+            {
+                throw new ServiceException(_albumServiceException + _invalidArtistErrorMessage);
+            }
 
             var albumList = await _albumRepository.GetAllAlbumsFromArtistAsync(artistId);
 
@@ -50,7 +63,10 @@ namespace MusicLibraryBLL.Services
 
         public async Task UpdateAlbumAsync(AlbumDTO album)
         {
-            // TODO Verify if artist exists
+            if (!await _artistRepository.ExistsByArtistIdAsync(album.ArtistId))
+            {
+                throw new ServiceException(_albumServiceException + _invalidArtistErrorMessage);
+            }
 
             if (await _albumRepository.ExistsByAlbumIdAsync(album.Id))
             {
