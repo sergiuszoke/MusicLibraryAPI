@@ -1,5 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using MusicLibraryDAL;
+using MusicLibraryBLL;
+using MusicLibraryDAL.Interfaces;
+using MusicLibraryDAL.Repository;
+using MusicLibraryBLL.Interfaces;
+using MusicLibraryBLL.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +14,12 @@ var connectionString = string.Format(dbFilePath, projectPath);
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(connectionString));
 builder.Services.AddControllers();
 
+builder.Services.ConfigureAutomapper();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddTransient<ISongRepository, SongRepository>();
+builder.Services.AddTransient<ISongService, SongService>();
 
 var app = builder.Build();
 

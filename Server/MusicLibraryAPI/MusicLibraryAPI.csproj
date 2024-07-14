@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MusicLibraryBLL\MusicLibraryBLL.csproj" />
     <ProjectReference Include="..\MusicLibraryDAL\MusicLibraryDAL.csproj" />
   </ItemGroup>
 
