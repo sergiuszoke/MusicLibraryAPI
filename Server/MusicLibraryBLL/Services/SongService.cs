@@ -11,7 +11,7 @@ namespace MusicLibraryBLL.Services
         private readonly string _songServiceException = "Song service exception. "; 
         private readonly string _uniqueSongErrorMessage = "Song already exists.";
         private readonly string _invalidSongErrorMessage = "Song does not exist.";
-        private readonly string _invalidLengthErrorMessage = "Invalid lenght";
+        private readonly string _invalidLengthErrorMessage = "Invalid lenght.";
         private readonly string _invalidSongTitleErrorMessage = "Song title cannot be null or empty.";
         private readonly string _invalidSongLengthErrorMessage = "Song length cannot be null or empty.";
         private readonly string _lengthFormatErrorMessage = "Invalid length format. Accepted formats are hh:mm:ss and mm:ss.";
@@ -31,7 +31,7 @@ namespace MusicLibraryBLL.Services
             Song newSong = _mapper.Map<Song>(song);
 
             var message = await ValidateSongAsync(newSong);
-            if(message is not null)
+            if (message is not null)
             {
                 throw new ServiceException(_songServiceException + message);
             }

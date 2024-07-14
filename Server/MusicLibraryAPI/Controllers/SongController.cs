@@ -84,7 +84,7 @@ namespace MusicLibraryAPI.Controllers
         }
 
         [HttpDelete("Delete")]
-        public async Task<IActionResult> DeleteSongAsync(int songId)
+        public async Task<IActionResult> DeleteSongByIdAsync(int songId)
         {
             try
             {
