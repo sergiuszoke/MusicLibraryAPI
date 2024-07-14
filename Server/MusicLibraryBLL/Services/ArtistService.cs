@@ -83,7 +83,7 @@ namespace MusicLibraryBLL.Services
                 return _invalidArtistNameErrorMessage;
             }
             
-            if(!await _artistRepository.IsArtistUniqueAsync(artist))
+            if (!await _artistRepository.IsArtistUniqueAsync(artist))
             {
                 return _uniqueArtistErrorMessage;
             }
