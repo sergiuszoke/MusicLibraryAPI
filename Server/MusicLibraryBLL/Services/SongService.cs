@@ -30,7 +30,7 @@ namespace MusicLibraryBLL.Services
             // TODO Verify if album exists
             Song newSong = _mapper.Map<Song>(song);
 
-            var message = await ValidateSong(newSong);
+            var message = await ValidateSongAsync(newSong);
             if(message is not null)
             {
                 throw new ServiceException(_songServiceException + message);
@@ -54,11 +54,11 @@ namespace MusicLibraryBLL.Services
         {
             // TODO Verify if album exists
 
-            if (await _songRepository.ExistsBySongId(song.Id))
+            if (await _songRepository.ExistsBySongIdAsync(song.Id))
             {
                 Song newSong = _mapper.Map<Song>(song);
 
-                var message = await ValidateSong(newSong);
+                var message = await ValidateSongAsync(newSong);
                 if (message is not null)
                 {
                     throw new ServiceException(_songServiceException + message);
@@ -74,7 +74,7 @@ namespace MusicLibraryBLL.Services
 
         public async Task DeleteSongByIdAsync(int songId)
         {
-            if (await _songRepository.ExistsBySongId(songId))
+            if (await _songRepository.ExistsBySongIdAsync(songId))
             {
                 await _songRepository.DeleteSongByIdAsync(songId);
             }
@@ -84,7 +84,7 @@ namespace MusicLibraryBLL.Services
             }    
         }
 
-        private async Task<string> ValidateSong(Song song)
+        private async Task<string> ValidateSongAsync(Song song)
         {
             if (song.Title.TrimEnd().Length == 0)
             {
@@ -137,7 +137,7 @@ namespace MusicLibraryBLL.Services
                 return _lengthFormatErrorMessage;
             }
 
-            if (!await _songRepository.IsSongUnique(song))
+            if (!await _songRepository.IsSongUniqueAsync(song))
             {
                 return _uniqueSongErrorMessage;
             }

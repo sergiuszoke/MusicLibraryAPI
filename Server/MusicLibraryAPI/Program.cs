@@ -21,6 +21,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<ISongRepository, SongRepository>();
 builder.Services.AddTransient<ISongService, SongService>();
 
+builder.Services.AddTransient<IAlbumRepository, AlbumRepository>();
+builder.Services.AddTransient<IAlbumService, AlbumService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

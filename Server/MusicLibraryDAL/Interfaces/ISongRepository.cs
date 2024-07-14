@@ -8,7 +8,7 @@ namespace MusicLibraryDAL.Interfaces
         Task<List<Song>> GetAllSongsFromAlbumAsync(int albumId);
         Task UpdateSongAsync(Song songToUpdate);
         Task DeleteSongByIdAsync(int songId);
-        Task<bool> ExistsBySongId(int songId);
-        Task<bool> IsSongUnique(Song songToCheck);
+        Task<bool> ExistsBySongIdAsync(int songId);
+        Task<bool> IsSongUniqueAsync(Song songToCheck);
     }
 }
