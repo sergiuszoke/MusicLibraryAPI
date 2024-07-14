@@ -75,7 +75,7 @@ namespace MusicLibraryDAL.Repository
             }
         }
 
-        public async Task<bool> ExistsBySongId(int songId)
+        public async Task<bool> ExistsBySongIdAsync(int songId)
         {
             try
             {
@@ -88,12 +88,13 @@ namespace MusicLibraryDAL.Repository
             }
         }
 
-        public async Task<bool> IsSongUnique(Song songToCheck)
+        public async Task<bool> IsSongUniqueAsync(Song songToCheck)
         {
             try
             {
                 return !await _dataContext.Songs
-                    .AnyAsync(song => song.Title == songToCheck.Title && song.AlbumId == songToCheck.AlbumId);
+                    .AnyAsync(song => song.Title == songToCheck.Title && 
+                              song.AlbumId == songToCheck.AlbumId);
             }
             catch (Exception ex)
             {
