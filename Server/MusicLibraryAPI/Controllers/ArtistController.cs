@@ -2,27 +2,28 @@
 using MusicLibraryBLL.DTOs;
 using MusicLibraryBLL.Interfaces;
 using MusicLibraryBLL.Services;
+using MusicLibraryDAL.Models;
 using MusicLibraryDAL.Repository;
 
 namespace MusicLibraryAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AlbumController : ControllerBase
+    public class ArtistController : ControllerBase
     {
-        private readonly IAlbumService _albumService;
+        private readonly IArtistService _artistService;
 
-        public AlbumController(IAlbumService albumService)
+        public ArtistController(IArtistService artistService)
         {
-            _albumService = albumService;
+            _artistService = artistService;
         }
 
         [HttpPost("Add")]
-        public async Task<IActionResult> AddAlbumAsync(CreateAlbumDTO album)
+        public async Task<IActionResult> AddArtistAsync(CreateArtistDTO artist)
         {
             try
             {
-                await _albumService.AddAlbumAsync(album);
+                await _artistService.AddArtistAsync(artist);
                 return Ok();
             }
             catch (ServiceException ex)
@@ -39,17 +40,13 @@ namespace MusicLibraryAPI.Controllers
             }
         }
 
-        [HttpGet("GetAlbumsFromArtist")]
-        public async Task<IActionResult> GetAllAlbumsFromArtistAsync(int artistId)
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAllArtistsAsync()
         {
             try
             {
-                var albums = await _albumService.GetAllAlbumsFromArtistAsync(artistId);
-                return Ok(albums);
-            }
-            catch (ServiceException ex)
-            {
-                return BadRequest(ex.Message);
+                var artists = await _artistService.GetAllArtistsAsync();
+                return Ok(artists);
             }
             catch (RepositoryException ex)
             {
@@ -62,11 +59,11 @@ namespace MusicLibraryAPI.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task<IActionResult> UpdateAlbumAsync(AlbumDTO album)
+        public async Task<IActionResult> UpdateArtistAsync(ArtistDTO artist)
         {
             try
             {
-                await _albumService.UpdateAlbumAsync(album);
+                await _artistService.UpdateArtistAsync(artist);
                 return Ok();
             }
             catch (ServiceException ex)
@@ -84,11 +81,11 @@ namespace MusicLibraryAPI.Controllers
         }
 
         [HttpDelete("Delete")]
-        public async Task<IActionResult> DeleteAlbumByIdAsync(int albumId)
+        public async Task<IActionResult> DeleteArtistAsync(int artistId)
         {
             try
             {
-                await _albumService.DeleteAlbumByIdAsync(albumId);
+                await _artistService.DeleteArtistByIdAsync(artistId);
                 return Ok();
             }
             catch (ServiceException ex)

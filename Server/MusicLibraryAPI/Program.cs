@@ -24,6 +24,9 @@ builder.Services.AddTransient<ISongService, SongService>();
 builder.Services.AddTransient<IAlbumRepository, AlbumRepository>();
 builder.Services.AddTransient<IAlbumService, AlbumService>();
 
+builder.Services.AddTransient<IArtistRepository, ArtistRepository>();
+builder.Services.AddTransient<IArtistService, ArtistService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -9,10 +9,10 @@ namespace MusicLibraryBLL.Services
     public class AlbumService : IAlbumService
     {
         private readonly string _albumServiceException = "Album service exception. ";
-        private readonly string _invalidAlbumTitleErrorMessage = "Album title cannot be null or empty";
-        private readonly string _invalidAlbumDescriptionErrorMessage = "Album description cannot be null or empty";
-        private readonly string _uniqueAlbumErrorMessage = "Album already Exists";
-        private readonly string _invalidAlbumErrorMessage = "Album does not exist";
+        private readonly string _invalidAlbumTitleErrorMessage = "Album title cannot be null or empty.";
+        private readonly string _invalidAlbumDescriptionErrorMessage = "Album description cannot be null or empty.";
+        private readonly string _uniqueAlbumErrorMessage = "Album already Exists.";
+        private readonly string _invalidAlbumErrorMessage = "Album does not exist.";
 
         private readonly IAlbumRepository _albumRepository;
         private readonly IMapper _mapper;
@@ -29,7 +29,7 @@ namespace MusicLibraryBLL.Services
             Album newAlbum = _mapper.Map<Album>(album);
 
             var message = await ValidateAlbumAsync(newAlbum);
-            if(message is not null)
+            if (message is not null)
             {
                 throw new ServiceException(_albumServiceException + message);
             }
@@ -52,7 +52,7 @@ namespace MusicLibraryBLL.Services
         {
             // TODO Verify if artist exists
 
-            if(await _albumRepository.ExistsByAlbumIdAsync(album.Id))
+            if (await _albumRepository.ExistsByAlbumIdAsync(album.Id))
             {
                 Album newAlbum = _mapper.Map<Album>(album);
 
